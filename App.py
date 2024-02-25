@@ -3,13 +3,18 @@ from dotenv import load_dotenv
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
 # from langchain.embeddings import OpernAIEmbeddings
-from langchain.embeddings import HuggingFaceInstructEmbeddings
+# from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.memory import ConversationBufferMemory
-from langchain.chat_models import ChatOpenAI
+# from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationalRetrievalChain
 from langchain.llms import HuggingFaceHub
 from Template import css, bot_template, user_template
+import os
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+import google.generativeai as genai
+from langchain.chains.question_answering import load_qa_chain
+from langchain.prompts import PromptTemplate
 
 
 def get_pdf_text(pdf_docs):
@@ -60,6 +65,8 @@ def handle_userinput(user_question):
     
 def main():
     load_dotenv()
+    os.getenv("GOOGLE_API_KEY")
+    genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
     st.set_page_config(page_title = "Chat with multitple PDFs", page_icon=":books:")
     st.write(css, unsafe_allow_html=True)
     
@@ -69,7 +76,7 @@ def main():
         st.session_state.chat_history  = None
         
         
-    st.header("Chat with multitple PDFs:books:")
+    st.header("Chat with PDFs:books:")
     user_question = st.text_input("Ask a question about the document:")
     if user_question :
         handle_userinput(user_question)
