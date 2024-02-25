@@ -1,4 +1,4 @@
-# MultiPDF Chat App
+# PDf CHATBOT APPLICATION
 
 ## Introduction
 ------------
