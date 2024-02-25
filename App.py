@@ -1,21 +1,25 @@
 import streamlit as st
 from dotenv import load_dotenv
+import os
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
 # from langchain.embeddings import OpernAIEmbeddings
 # from langchain.embeddings import HuggingFaceInstructEmbeddings
+# from langchain.chat_models import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+import google.generativeai as genai
 from langchain.vectorstores import FAISS
 from langchain.memory import ConversationBufferMemory
-# from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationalRetrievalChain
 from langchain.llms import HuggingFaceHub
 from Template import css, bot_template, user_template
-import os
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
-import google.generativeai as genai
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
 
+
+load_dotenv()
+api_key = os.getenv("GOOGLE_API_KEY")
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 
 def get_pdf_text(pdf_docs):
     text = ""
@@ -38,17 +42,23 @@ def get_text_chunks(text):
 def get_vectorstore(text_chunks):
     # embeddings = OpernAIEmbeddings()
     # embeddings = HuggingFaceInstructEmbeddings(model_name = "hkunlp/instructor-xl")
-    embeddings = GoogleGenerativeAIEmbeddings()
-    vectorstore = FAISS.from_texts(text = text_chunks, embeddings = embeddings)
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=api_key)
+    vectorstore = FAISS.from_texts(texts = text_chunks, embedding = embeddings,)
     return vectorstore
 
 def get_conversation_chain(vectorstore):
     # llm = ChatOpenAI()
-    llm  = genai
+    llm  = ChatGoogleGenerativeAI(
+        model="gemini-pro",
+        google_api_key=api_key,
+        temperature=0.3,
+        convert_system_message_to_human=True,
+    )
     memory = ConversationBufferMemory(memory_key='Chat_history', return_messages = True)
     conversation_chain = ConversationalRetrievalChain.from_llm(
         llm = llm,
-        retriever = vectorstore.as_retriver(),
+        chain_type='stuff',
+        retriever = vectorstore.as_retriever(),
         memory = memory
     )
     return conversation_chain
