@@ -3,18 +3,18 @@ from dotenv import load_dotenv
 import os
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
+# from langchain.text_splitter import CharacterTextSplitter
 # from langchain.embeddings import OpernAIEmbeddings
 # from langchain.embeddings import HuggingFaceInstructEmbeddings
+# from langchain.llms import HuggingFaceHub
 # from langchain.chat_models import ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 import google.generativeai as genai
 from langchain.vectorstores import FAISS
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
-from langchain.llms import HuggingFaceHub
 from Template import css, bot_template, user_template
-from langchain.chains.question_answering import load_qa_chain
-from langchain.prompts import PromptTemplate
+
 
 
 load_dotenv()
@@ -42,7 +42,7 @@ def get_text_chunks(text):
 def get_vectorstore(text_chunks):
     # embeddings = OpernAIEmbeddings()
     # embeddings = HuggingFaceInstructEmbeddings(model_name = "hkunlp/instructor-xl")
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=api_key)
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
     vectorstore = FAISS.from_texts(texts = text_chunks, embedding = embeddings,)
     return vectorstore
 
@@ -50,16 +50,14 @@ def get_conversation_chain(vectorstore):
     # llm = ChatOpenAI()
     llm  = ChatGoogleGenerativeAI(
         model="gemini-pro",
-        google_api_key=api_key,
         temperature=0.3,
-        convert_system_message_to_human=True,
     )
+    
     memory = ConversationBufferMemory(memory_key='Chat_history', return_messages = True)
     conversation_chain = ConversationalRetrievalChain.from_llm(
         llm = llm,
-        chain_type='stuff',
         retriever = vectorstore.as_retriever(),
-        memory = memory
+        # memory = memory
     )
     return conversation_chain
 
@@ -76,10 +74,7 @@ def handle_userinput(user_question):
                 "{{MSG}}", message.content), unsafe_allow_html=True)
     
 def main():
-    load_dotenv()
-    os.getenv("GOOGLE_API_KEY")
-    genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-    st.set_page_config(page_title = "Chat with multitple PDFs", page_icon=":books:")
+    st.set_page_config(page_title = "Chat with PDFs", page_icon=":books:")
     st.write(css, unsafe_allow_html=True)
     
     if "coversation" not in st.session_state:
@@ -115,4 +110,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
