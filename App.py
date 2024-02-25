@@ -38,7 +38,7 @@ def get_text_chunks(text):
 def get_vectorstore(text_chunks):
     # embeddings = OpernAIEmbeddings()
     # embeddings = HuggingFaceInstructEmbeddings(model_name = "hkunlp/instructor-xl")
-    embeddings = GoogleGenerativeAIEmbeddings
+    embeddings = GoogleGenerativeAIEmbeddings()
     vectorstore = FAISS.from_texts(text = text_chunks, embeddings = embeddings)
     return vectorstore
 
