@@ -37,12 +37,14 @@ def get_text_chunks(text):
 
 def get_vectorstore(text_chunks):
     # embeddings = OpernAIEmbeddings()
-    embeddings = HuggingFaceInstructEmbeddings(model_name = "hkunlp/instructor-xl")
+    # embeddings = HuggingFaceInstructEmbeddings(model_name = "hkunlp/instructor-xl")
+    embeddings = GoogleGenerativeAIEmbeddings
     vectorstore = FAISS.from_texts(text = text_chunks, embeddings = embeddings)
     return vectorstore
 
 def get_conversation_chain(vectorstore):
-    llm = ChatOpenAI()
+    # llm = ChatOpenAI()
+    llm  = genai
     memory = ConversationBufferMemory(memory_key='Chat_history', return_messages = True)
     conversation_chain = ConversationalRetrievalChain.from_llm(
         llm = llm,
