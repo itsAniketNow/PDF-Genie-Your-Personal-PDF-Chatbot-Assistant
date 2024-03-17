@@ -25,7 +25,6 @@ To run PDF Genie locally on your machine, follow these steps:
 Clone the Repository:
 
 ```
-Copy code
 git clone (https://github.com/itsAniketNow/PDF_Chatbot/new/main)
 ```
 Install Dependencies:
