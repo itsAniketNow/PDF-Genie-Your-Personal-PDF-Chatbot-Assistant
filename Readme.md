@@ -1,8 +1,8 @@
 # PDF Genie: Your Personal PDF Chatbot Assistant
-PDF Genie is a powerful conversational AI application designed to assist users in extracting information from multiple PDF documents and answering questions based on the provided context. With its intuitive interface and advanced AI capabilities, PDF Genie makes it easy to interact with PDF documents and obtain relevant information effortlessly.
+PDF Genie is a strong conversational AI program that helps users extract information from numerous PDF documents and answer queries based on the context. With its user-friendly interface and advanced AI capabilities, PDF Genie makes it simple to interact with PDF documents and receive important information.
 
 ## Project Description
-PDF Genie is built using Python and leverages state-of-the-art machine learning and natural language processing techniques. The application utilizes the Google Gemini model for training, but users also have the flexibility to switch between other models provided by OpenAI and Hugging Face. Developed with Streamlit, PDF Genie offers a seamless user experience, allowing users to upload multiple PDF files, extract text, and engage in interactive conversations with the chatbot.
+PDF Genie is written in Python and uses cutting-edge machine learning and natural language processing techniques. The application uses the Google Gemini model for training, but users can easily choose between models provided by OpenAI and Hugging Face. PDF Genie, created with Streamlit, provides a smooth user experience by allowing users to upload multiple PDF files, extract content, and engage in engaging conversations with the chatbot.
 
 ## Technology Used
 - Python: The core programming language used for development.
