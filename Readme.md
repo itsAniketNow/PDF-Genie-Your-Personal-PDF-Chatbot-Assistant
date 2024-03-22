@@ -60,12 +60,12 @@ streamlit run main.py
 To deploy PDF Genie to the cloud, build the Docker image and push it to your registry. Consult Docker's documentation for detailed instructions on building and pushing Docker images.
 
 ## References
-Streamlit Documentation
-Google Gemini
-OpenAI
-Hugging Face
+- Streamlit Documentation
+- Google Gemini
+- OpenAI
+- Hugging Face
 
 ## Acknowledgments
-Google Gemini: For providing the underlying language model.
-Streamlit: For the user interface framework.
-Let PDF Genie be your ultimate assistant in navigating through PDF documents and extracting valuable insights with ease!
+- Google Gemini: For providing the underlying language model.
+- Streamlit: For the user interface framework.
+- Let PDF Genie be your ultimate assistant in navigating through PDF documents and extracting valuable insights with ease!
